@@ -550,6 +550,7 @@ mid x y z
     | max x (max y z) /= x && min z (min y x) /= x = x
     | max x (max y z) /= y && min z (min y x) /= y = y
     | max x (max y z) /= z && min z (min y x) /= z = z
+    | otherwise = z
 
 {- |
 =⚔️= Task 8
@@ -634,12 +635,11 @@ Try to introduce variables in this task (either with let-in or where) to avoid
 specifying complex expressions.
 -}
 sumLast2 :: Int -> Int
-sumLast2 n = tensNumber (abs n) + unitsNumber (abs n)
+sumLast2 n = let absN = abs n
+    in tensNumber absN + lastDigit absN
     where
         tensNumber :: Int -> Int
         tensNumber x = div (mod x 100) 10
-        unitsNumber :: Int -> Int
-        unitsNumber x = mod x 10
 
 {- |
 =💣= Task 10*
@@ -659,7 +659,15 @@ You need to use recursion in this task. Feel free to return to it later, if you
 aren't ready for this boss yet!
 -}
 firstDigit :: Int -> Int
-firstDigit n = if div (abs n) 10 == 0 then abs n else firstDigit (div (abs n) 10)
+firstDigit n =
+    let absN = abs n
+    in
+        if getNumberWithoutUnits absN == 0
+        then absN
+        else firstDigit (getNumberWithoutUnits absN)
+    where
+      getNumberWithoutUnits :: Int -> Int
+      getNumberWithoutUnits x = div x 10
 
 
 {-
