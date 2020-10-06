@@ -337,10 +337,11 @@ from it!
 ghci> :l src/Chapter2.hs
 -}
 subList :: Int -> Int -> [a] -> [a]
-subList firstPoint secondPoint array =
-    if firstPoint < 0 || secondPoint < 0
-    then []
-    else take (secondPoint - firstPoint + 1) (drop firstPoint array)
+subList firstPoint secondPoint array
+    | firstPoint < 0 = []
+    | secondPoint < 0 = []
+    | firstPoint > secondPoint = []
+    | otherwise = take (secondPoint - firstPoint + 1) (drop firstPoint array)
 
 {- |
 =⚔️= Task 4
@@ -615,7 +616,7 @@ Implement a function that duplicates each element of the list
 -}
 duplicate :: [a] -> [a]
 duplicate [] = []
-duplicate (x:xs) = [x, x] ++ duplicate xs
+duplicate (x:xs) = x : x : duplicate xs
 
 
 {- |
@@ -633,8 +634,7 @@ Write a function that takes elements of a list only on even positions.
 takeEven :: [a] -> [a]
 takeEven [] = []
 takeEven [x] = [x]
-takeEven [x, _, xs] = [x, xs]
-takeEven (x:_:xs) = [x] ++ takeEven xs
+takeEven (x:_:xs) = x : takeEven xs
 
 {- |
 =🛡= Higher-order functions
@@ -741,7 +741,7 @@ value of the element itself
 🕯 HINT: Use combination of 'map' and 'replicate'
 -}
 smartReplicate :: [Int] -> [Int]
-smartReplicate l = concat (map (\a -> replicate a a) l)
+smartReplicate = concatMap (\a -> replicate a a)
 
 {- |
 =⚔️= Task 9
@@ -881,8 +881,11 @@ and reverses it.
   cheating!
 -}
 rewind :: [Int] -> [Int]
-rewind [] = []
-rewind (x:xs) = rewind xs ++ [x] 
+rewind = go []
+    where
+        go :: [Int] -> [Int] -> [Int]
+        go rew [] = rew
+        go rew (x:xs) = go (x : rew) xs
 
 
 {-
