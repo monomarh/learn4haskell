@@ -399,7 +399,7 @@ data Mob = Mob
 mobFight :: Mob -> Mob -> Int
 mobFight attacker defender
   | isFigthWinFirstMob attacker defender = mobGold defender + mobGold attacker
-  | isFigthWinFirstMob defender attacker = (-1)
+  | isFigthWinFirstMob defender attacker = -1
   | otherwise = mobGold attacker
   where
     isFigthWinFirstMob :: Mob -> Mob -> Bool
@@ -1006,7 +1006,7 @@ instance Append Gold where
 
 instance Append [a] where
   append :: [a] -> [a] -> [a]
-  append [x] [y] = [x] ++ [y]
+  append [x] [y] = x : [y]
 
 {-
 =🛡= Standard Typeclasses and Deriving
