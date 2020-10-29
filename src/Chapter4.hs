@@ -498,12 +498,12 @@ Implement the 'Applicative' instance for our 'List' type.
 
 instance Applicative List where
     pure :: a -> List a
-    pure x = Cons x Empty 
+    pure x = Cons x Empty
 
     (<*>) :: List (a -> b) -> List a -> List b
     (<*>) Empty _ = Empty
     (<*>) _ Empty = Empty
-    (<*>) (Cons f fs) l = append (fmap f l) (fs <*> l) 
+    (<*>) (Cons f fs) l = append (fmap f l) (fs <*> l)
 
 append :: List a -> List a -> List a
 append Empty ys = ys
